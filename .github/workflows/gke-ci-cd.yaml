@@ -22,11 +22,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
-    # Setup gcloud CLI
-    - uses: google-github-actions/setup-gcloud@1bee7de035d65ec5da40a31f8589e240eba8fde5
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
       with:
-        service_account_key: ${{ secrets.GKE_SA_KEY }}
-        project_id: properman
+        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v1'
+      with:
+        cluster_name: 'properman'
+        location: 'us-central1-a'
     
     # Configure Docker to use the gcloud command-line tool as a credential helper for authentication
     - run: |-
