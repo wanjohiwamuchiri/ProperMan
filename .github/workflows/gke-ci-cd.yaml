@@ -38,7 +38,7 @@ jobs:
         gcloud --quiet auth configure-docker
 
     - name: Build the image
-      run: docker build -t properman .
+      run: docker build -t properman -f /properman/Dockerfile .
     - name: Push the image to GCR
       run: docker push properman
 
