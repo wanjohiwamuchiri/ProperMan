@@ -1,6 +1,6 @@
 FROM golang:1.21.0 as builder
 WORKDIR /properman
-RUN go mod init hello-app
+RUN go mod init github.com/wanjohiwamuchiri/properman
 COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o /hello-app
 
