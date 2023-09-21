@@ -31,12 +31,12 @@ jobs:
       uses: 'google-github-actions/get-gke-credentials@v1'
       with:
         cluster_name: 'properman'
-        location: 'us-central1-a'
+        location: 'us-central1'
     
     # Configure Docker to use the gcloud command-line tool as a credential helper for authentication
     - run: |-
         gcloud --quiet auth configure-docker
-        
+
     # Build the Docker image
     - name: Build
       run: |-
