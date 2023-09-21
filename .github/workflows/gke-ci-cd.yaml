@@ -6,11 +6,11 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ secrets.PROJECT }}
+  PROJECT_ID: properman
   GKE_CLUSTER: properman    # Add your cluster name here.
-  GKE_ZONE: ${{ secrets.COMUPUTE_ZONE }}   # Add your cluster zone here.
-  DEPLOYMENT_NAME: ${{ secrets.DEPLOYMENT_NAME }} # Add your deployment name here.
-  IMAGE: ${{ secrets.IMAGE }}
+  GKE_ZONE: us-central1-a   # Add your cluster zone here.
+  DEPLOYMENT_NAME: properman # Add your deployment name here.
+  IMAGE: properman
 
 jobs:
   setup-build-publish-deploy:
