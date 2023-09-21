@@ -37,7 +37,6 @@ jobs:
     - run: |-
         gcloud --quiet auth configure-docker
 
-    - uses: actions/setup-docker@v3
     - name: Build the image
       run: docker build -t gcr.io/$PROJECT/$IMAGE_NAME .
     - name: Push the image to GCR
