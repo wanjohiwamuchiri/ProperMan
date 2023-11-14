@@ -1,0 +1,271 @@
+syntax = "proto3";
+
+option go_package = "github.com/wanjohiwamuchiri/properman";
+
+
+// The greeting service definition.
+service Greeter {
+   // Sends a greeting
+   rpc SayHello (HelloRequest) returns (HelloReply) {}
+   // Sends another greeting
+   rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+}
+ 
+// The request message containing the user's name.
+message HelloRequest {
+   string name = 1;
+}
+ 
+// The response message containing the greetings
+message HelloReply {
+   string message = 1;
+}
+
+message Empty {}
+message EmptyResponse {}
+message EmptyRequest {}
+
+
+
+//
+// LandlordService  
+//    * allows landlords to add, update, and delete properties, as well as 
+//    * view a list of their properties and tenants.
+//
+service LandlordService {
+   rpc CreateProperty(CreatePropertyRequest) returns (CreatePropertyResponse) {}
+   rpc CreateProperties(CreatePropertiesRequest) returns (CreatePropertiesResponse) {}
+   rpc GetProperties(GetPropertiesRequest) returns (PropertiesResponse) {}
+   rpc DeleteProperty(DeletePropertyRequest) returns (DeletePropertyResponse) {}
+   rpc DeleteProperties(DeletePropertiesRequest) returns (DeletePropertiesResponse) {}
+   rpc CreateTenant(CreateTenantRequest) returns (CreateTenantResponse) {}
+   rpc CreateTenants(CreateTenantsRequest) returns (CreateTenantsResponse) {}
+   rpc GetTenants(GetTenantsRequest) returns (TenantsResponse) {}
+   rpc DeleteTenant(DeleteTenantRequest) returns (DeleteTenantResponse) {}   
+}
+// CreatePropertyRequest is a message that contains information about a property.
+message CreatePropertyRequest {
+   string id = 1; // The ID of the property.
+   string address = 2; // The address of the property.
+   int32 rent = 3; // The rent for the property.
+}
+// PropertyResponse is a message that contains information about a property.
+message CreatePropertyResponse {
+   string id = 1; // The ID of the property.
+   string address = 2; // The address of the property.
+   int32 rent = 3; // The rent for the property.
+}
+// TO-DO
+message CreatePropertiesRequest {}
+// TO-DO
+message CreatePropertiesResponse {}
+// TO-DO
+message GetPropertiesRequest {}
+// PropertiesResponse is a message that contains a list of properties.
+message PropertiesResponse {
+   repeated CreatePropertyResponse properties = 1;
+}
+// PropertiesSearchRequest  
+message PropertiesSearchRequest {}
+// TO-DO
+message GetTenantsRequest {}
+// TO-DO
+message DeletePropertyRequest {}
+// TO-DO
+message DeletePropertyResponse {}
+// TO-DO
+message DeletePropertiesRequest {}
+// TO-DO
+message DeletePropertiesResponse {}
+// TO-DO
+message DeleteTenantRequest {}
+// TO-DO
+message DeleteTenantResponse {}
+
+
+
+//
+// TenantService 
+//       * allows tenants to find and rent properties, as well as 
+//       * view a list of their current and past rentals.
+service TenantService {
+   rpc FindProperties(PropertiesSearchRequest) returns (PropertiesResponse) {}
+   rpc RentAProperty(RentAPropertyRequest) returns (RentAPropertyResponse) {}
+   rpc MoveOut(MoveOutRequest) returns (MoveOutResponse) {}
+   rpc GetPastRentals(GetPastRentalsRequest) returns (PropertiesResponse) {}
+}
+// TO-DO
+message RentAPropertyRequest {}
+// TO-DO
+message RentAPropertyResponse {}
+// TO-DO
+message MoveOutRequest {}
+// TO-DO
+message MoveOutResponse {}
+// TO-DO
+message TenantsResponse {}
+// TO-DO
+message CreateTenantRequest {}
+// TO-DO
+message CreateTenantResponse {}
+// TO-DO
+message CreateTenantsRequest {}
+// TO-DO
+message CreateTenantsResponse {}
+// TO-DO
+message GetPastRentalsRequest {}
+
+
+
+//
+// PaymentsService
+//       * allows tenants and landlords to pay their rent and bills online, create/edit payment gateway options
+//
+service PaymentsService{
+   rpc GetSupportedCurrencies(Empty) returns (GetSupportedCurrenciesResponse) {}
+   rpc ClearBills(ClearBillsRequest) returns (ClearBillsResponse) {}
+   rpc CreatePaymentGateway(CreatePaymentGatewayRequest) returns (CreatePaymentGatewayResponse) {}
+   rpc UpdatePaymentGateway(UpdatePaymentGatewayRequest) returns (UpdatePaymentGatewayResponse) {}
+}
+// TO-DO
+message UpdatePaymentGatewayRequest {}
+// TO-DO
+message UpdatePaymentGatewayResponse {}
+// TO-DO
+message CreatePaymentGatewayRequest {}
+// TO-DO
+message CreatePaymentGatewayResponse {}
+// TO-DO
+message ClearBillsRequest {}
+// TO-DO
+message ClearBillsResponse {}
+//
+message Money {
+   // The 3-letter currency code defined in ISO 4217.
+   string currency_code = 1;
+   
+   // The whole units of the amount.
+    // For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
+   int64 units = 2;
+
+   // Number of nano (10^-9) units of the amount.
+   // The value must be between -999,999,999 and +999,999,999 inclusive.
+   // If `units` is positive, `nanos` must be positive or zero.
+   // If `units` is zero, `nanos` can be positive, zero, or negative.
+   // If `units` is negative, `nanos` must be negative or zero.
+   // For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+   int32 nanos = 3;
+}
+//
+message GetSupportedCurrenciesResponse {
+   // The 3-letter currency code defined in ISO 4217.
+   repeated string currency_codes = 1;
+}
+//
+message CreaditCardInfo {
+   string credit_card_number = 1;
+   int32 credit_card_cvv = 2;
+   int32 credit_card_expirition_year = 3;
+   int32 credit_card_expirition_month = 4;
+}
+//
+message BillRequest {
+   Money amount = 1;
+   CreaditCardInfo credit_card = 2;
+}
+//
+message BillResponse {
+   string transation_id = 1;
+}
+
+
+
+//
+// PropertyAccountingService
+//    * tracks rental income, expenses, and other financial data for each property.
+//
+service PropertyAccountingService {
+   rpc TrackPropertyRentalIncome(TrackPropertyRentalIncomeRequest) returns (TrackPropertyRentalIncomeResponse) {}
+   rpc TrackPropertiesRentalIncome(TrackPropertiesRentalIncomeRequest) returns (TrackPropertiesRentalIncomeResponse) {}
+   rpc TrackPropertyExpenses(TrackPropertyExpensesRequest) returns (TrackPropertyExpensesResponse) {}
+   rpc GeneratePropertyFinancialStatements(GeneratePropertyFinancialStatementsRequest) returns (GeneratePropertyFinancialStatementsResponse) {}
+   rpc GetPropertyFinancialReport(GetPropertyFinancialReportRequest) returns (GetPropertyFinancialReportResponse) {}
+   //rpc GenerateInvoice(InvoiceRequest) returns (EmptyResponse) {}
+}
+// TO-DO
+message TrackPropertyRentalIncomeRequest {}
+// TO-DO
+message TrackPropertyRentalIncomeResponse {}
+// TO-DO
+message TrackPropertiesRentalIncomeRequest {}
+// TO-DO
+message TrackPropertiesRentalIncomeResponse {}
+// TO-DO
+message TrackPropertyExpensesRequest {}
+// TO-DO
+message TrackPropertyExpensesResponse {}
+// TO-DO
+message GeneratePropertyFinancialStatementsRequest {}
+// TO-DO
+message GeneratePropertyFinancialStatementsResponse {}
+// TO-DO
+message GetPropertyFinancialReportRequest {}
+// TO-DO
+message GetPropertyFinancialReportResponse {}
+
+
+
+// TO-DO
+// ReportingService
+//       * generates reports for landlords on the financial performance of their properties
+//
+service ReportingService {}
+
+
+
+// TO-DO
+// BillingService
+//       * generates invoices and statements for tenants
+//
+service BillingService {}
+
+
+
+// TO-DO
+// RentalAccountingService
+//       * tracks rental income, expenses, and other financial data for each tenancy
+//
+service RentalAccountingService {
+   rpc TrackRentalIncome(RentalIncomeRequest) returns (RentalIncomeResponse) {}
+   //rpc TrackExpense(ExpenseRequest) returns (EmptyResponse) {}
+   //rpc GenerateInvoice(InvoiceRequest) returns (EmptyResponse) {}
+   //rpc GenerateStatement(StatementRequest) returns (EmptyResponse) {}
+}
+// TO-DO
+message RentalIncomeRequest {}
+// TO-DO
+message RentalIncomeResponse {}
+
+
+
+// TO-DO
+// PropertyMaintenanceService
+//
+//
+service PropertyMaintenanceService {}
+
+
+
+// TO-DO
+//
+/*
+   In addition to the above services, implement a variety of other features in a property management system, 
+   such as:
+         * Maintenance requests
+         * Work orders
+         * Inspections
+         * Tenant screening
+         * Property insurance
+*/
+
+
